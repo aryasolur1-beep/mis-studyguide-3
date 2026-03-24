@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MIS Chapter 3 Study Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0B0E14;
+            --surface: #161B22;
+            --accent: #58A6FF;
+            --text-main: #E6EDF3;
+            --text-dim: #8B949E;
+            --correct: #238636;
+            --wrong: #DA3633;
+            --border: #30363D;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        nav {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        nav h1 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .nav-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+
+        main {
+            margin-left: 260px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .vocab-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .vocab-card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            display: block;
+            margin-top: 1rem;
+        }
+
+        .example-box {
+            background: rgba(88, 166, 255, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .q-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .q-number {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .scenario {
+            line-height: 1.65;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .question-line {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 0.6rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+        }
+
+        .option.correct {
+            background: var(--correct);
+            border-color: var(--correct);
+        }
+
+        .option.wrong {
+            background: var(--wrong);
+            border-color: var(--wrong);
+        }
+
+        .answer-block {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border: 1px solid var(--border);
+        }
+
+        .answer-block strong {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            body {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1>MIS Chapter 3</h1>
+    <button class="nav-btn active" onclick="showTab('vocab', this)">Terms</button>
+    <button class="nav-btn" onclick="showTab('quiz', this)">Practice Quiz</button>
+    <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;">
+        Focus: platforms, network effects, bundling, standards, market structure, and adoption strategy.
+    </div>
+</nav>
+
+<main>
+    <section id="vocab" class="section active">
+        <input type="text" class="search-bar" id="search" placeholder="Search Chapter 3 terms..." onkeyup="filterVocab()">
+        <div id="vocab-container"></div>
+    </section>
+
+    <section id="quiz" class="section">
+        <div id="quiz-container"></div>
+    </section>
+</main>
+
+<script>
+const vocabData = [
+    {
+        term: "Backward compatibility",
+        exact: "The ability of a new product, system, or standard to work with older versions, files, devices, or complementary products.",
+        simple: "When a new version still works with older stuff.",
+        example: "A new game console that can still play older games offers backward compatibility."
+    },
+    {
+        term: "Blue ocean strategy",
+        exact: "A strategy focused on creating a new market space or demand rather than fighting head-to-head in an existing crowded market.",
+        simple: "Creating a new market instead of battling rivals in the old one.",
+        example: "A company creates a simple product for noncustomers instead of competing only with existing brands."
+    },
+    {
+        term: "Bundling",
+        exact: "The practice of combining multiple products or services together and offering them as one package.",
+        simple: "Selling several things together as one deal.",
+        example: "A software firm bundles cloud storage, email, and video meetings into one subscription."
+    },
+    {
+        term: "Complementary benefits",
+        exact: "Advantages a product gains because related products or services increase its value to users.",
+        simple: "Extra value created by related products or services that work with it.",
+        example: "A phone becomes more useful when many apps, accessories, and services support it."
+    },
+    {
+        term: "Congestion effects",
+        exact: "A decrease in value that occurs when too many users crowd a service, network, or platform and reduce performance or convenience.",
+        simple: "When too many users make something less useful.",
+        example: "A rideshare app may become slower and more frustrating if demand overwhelms available drivers."
+    },
+    {
+        term: "Customer acquisition costs (CAC)",
+        exact: "The cost a firm incurs to attract and win a new customer through marketing, promotions, sales, and related efforts.",
+        simple: "How much it costs to get a new customer.",
+        example: "If a company spends $50 in ads to win one paying subscriber, its CAC is $50."
+    },
+    {
+        term: "Freemium",
+        exact: "A pricing model where a basic version of a product is free, while advanced features or premium use require payment.",
+        simple: "Free basic version, paid upgraded version.",
+        example: "A music app lets people listen for free with ads but charges for offline listening and no ads."
+    },
+    {
+        term: "Incumbent",
+        exact: "An existing, established company already operating in a market.",
+        simple: "A company that is already established in the industry.",
+        example: "A major airline is an incumbent in air travel."
+    },
+    {
+        term: "Monopoly",
+        exact: "A market structure in which one firm dominates or controls the market with little or no direct competition.",
+        simple: "A market with one dominant seller.",
+        example: "A utility company may act like a monopoly in a local area."
+    },
+    {
+        term: "Network effects (aka network externalities, Metcalfe's Law, demand side economies of scale)",
+        exact: "A situation in which a product or service becomes more valuable as more users join or participate.",
+        simple: "A product gets better or more useful when more people use it.",
+        example: "A messaging app becomes more useful when more friends join it."
+    },
+    {
+        term: "Oligopoly",
+        exact: "A market structure in which a small number of firms dominate the industry.",
+        simple: "A market controlled by a few major firms.",
+        example: "The wireless carrier market in many countries is an oligopoly."
+    },
+    {
+        term: "Platforms",
+        exact: "Products or services that connect different groups, such as users and developers or buyers and sellers, and enable interactions among them.",
+        simple: "A system that brings different groups together and helps them interact.",
+        example: "An app store is a platform connecting developers and users."
+    },
+    {
+        term: "Standard",
+        exact: "A commonly accepted set of rules, specifications, or formats that allows compatibility and coordination among products or firms.",
+        simple: "A shared rule or format that helps things work together.",
+        example: "USB is a standard that lets many devices connect in a common way."
+    },
+    {
+        term: "Subsidize adoption",
+        exact: "To reduce price or cost for users, sometimes temporarily, in order to encourage more people to adopt a product or service.",
+        simple: "Making something cheaper at first so more people start using it.",
+        example: "A startup offers free delivery for new users to subsidize adoption."
+    }
+];
+
+const quizData = [
+    {
+        scenario: "A student startup launches a note-sharing app on campus. At first, the app has only a few users, so it feels empty and not very useful. After several large classes begin using it, the app becomes much more valuable because students can find more notes, more study partners, and faster replies. Soon, the founders realize that growth itself is increasing the product's appeal.",
+        question: "Which concept BEST explains why the app becomes more valuable as more students join?",
+        options: [
+            "A. Customer acquisition costs because marketing expenses rise with each user",
+            "B. Network effects because the service gains value as participation grows",
+            "C. Congestion effects because the app gets crowded with activity",
+            "D. Bundling because several study tools are offered together"
+        ],
+        correct: 1,
+        explanation: "B is correct because network effects occur when a product becomes more useful as more users participate. A is wrong because CAC is about the cost of winning customers, not the value created by user growth. C is wrong because congestion effects reduce value when too many users overwhelm a service, which is not the main outcome described here. D is wrong because the scenario is about growing participation, not combining products into a package."
+    },
+    {
+        scenario: "A new software firm enters a crowded market for video meeting tools. Instead of trying to beat major companies on the same features, it builds a simple communication tool designed specifically for deaf students, with real-time captions and sign-language-friendly layouts. The founders believe they are not just fighting existing rivals, but creating demand in a space that others ignored.",
+        question: "Which concept BEST describes the strategy the founders are using?",
+        options: [
+            "A. Blue ocean strategy because they are creating a new market space rather than battling in the same crowded one",
+            "B. Monopoly because only one firm can serve this kind of customer",
+            "C. Bundling because they are combining several services into one package",
+            "D. Standard because they are promoting one shared technical format"
+        ],
+        correct: 0,
+        explanation: "A is correct because blue ocean strategy focuses on creating new demand or market space instead of competing head-to-head in a crowded market. B is wrong because the company is not automatically a monopoly just because it targets a niche. C is wrong because the scenario is not mainly about packaging multiple products together. D is wrong because there is no focus on a common technical rule or format."
+    },
+    {
+        scenario: "A music streaming company offers a free version with ads, limited skips, and lower sound quality. Students can still use the app, but many later pay for premium features like offline listening, better quality, and no ads. The company says this model helps it attract many users first and then convert some into paying subscribers.",
+        question: "Which concept BEST matches this pricing model?",
+        options: [
+            "A. Subsidize adoption because every user gets a temporary discount",
+            "B. Freemium because a basic free version is used to attract users while advanced features require payment",
+            "C. Bundling because music and ads are offered together",
+            "D. Oligopoly because a few firms dominate streaming"
+        ],
+        correct: 1,
+        explanation: "B is correct because freemium means offering a basic version for free while charging for premium features. A is close but wrong because subsidizing adoption is broader and often temporary, while freemium is a specific long-term model. C is wrong because bundling means packaging multiple distinct products or services together. D is wrong because market structure is not the pricing model being described."
+    },
+    {
+        scenario: "A phone maker releases new wireless earbuds but makes sure they still work with older phones, chargers, and accessories that customers already own. Managers believe buyers will be more willing to upgrade if the new product does not force them to replace everything else. They see compatibility with past purchases as a major selling point.",
+        question: "Which concept BEST explains the firm's decision?",
+        options: [
+            "A. Standard because all firms must use identical product designs",
+            "B. Backward compatibility because the new product still works with older systems and accessories",
+            "C. Complementary benefits because accessories make phones more valuable",
+            "D. Subsidize adoption because customers are given lower prices at launch"
+        ],
+        correct: 1,
+        explanation: "B is correct because backward compatibility means new products still work with older versions, devices, or related items. A is wrong because a standard is a shared rule or format, but the scenario is specifically about a new product working with older products. C is related to added value from complements, but the firm's specific design choice is compatibility with earlier purchases. D is wrong because there is no mention of lowering price to encourage adoption."
+    },
+    {
+        scenario: "A food delivery app grows quickly in a college town. At first, more users make the platform better because more restaurants join and drivers stay busy. But later, too many orders arrive at once, delivery times rise, and both students and drivers become frustrated. The founders realize that growth can increase value up to a point and then start creating problems.",
+        question: "Which concept BEST describes the new problem the founders are facing?",
+        options: [
+            "A. Complementary benefits because more restaurants add value to the platform",
+            "B. Customer acquisition costs because it is expensive to win new users",
+            "C. Congestion effects because too many users are reducing the quality of the service",
+            "D. Monopoly because the firm is becoming the only delivery option"
+        ],
+        correct: 2,
+        explanation: "C is correct because congestion effects occur when too many users crowd a system and reduce its usefulness or performance. A is wrong because complementary benefits describe added value from related products or participants, which was true earlier but not the new problem. B is wrong because the scenario is about service quality, not the cost of winning customers. D is wrong because being large or dominant is not the same as the specific performance problem described."
+    }
+];
+
+function showTab(id, el) {
+    document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+}
+
+function renderVocab() {
+    const container = document.getElementById('vocab-container');
+    container.innerHTML = vocabData.map(item => `
+        <div class="vocab-card">
+            <h3>${item.term}</h3>
+            <span class="label">Exact Definition</span>
+            <p>${item.exact}</p>
+            <span class="label">Simple Definition</span>
+            <p>${item.simple}</p>
+            <div class="example-box">
+                <span class="label" style="margin-top:0">Example</span>
+                ${item.example}
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterVocab() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const cards = document.querySelectorAll('.vocab-card');
+    cards.forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
+    });
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = quizData.map((item, i) => `
+        <div class="q-card" id="q${i}">
+            <div class="q-number">${i + 1}.</div>
+            <p class="scenario">${item.scenario}</p>
+            <p class="question-line">${item.question}</p>
+            ${item.options.map((opt, oi) => `
+                <button class="option" onclick="checkAnswer(${i}, ${oi})">${opt}</button>
+            `).join('')}
+            <div class="answer-block" id="exp${i}">
+                <p><strong>Correct answer:</strong> ${String.fromCharCode(65 + item.correct)}</p>
+                <p><strong>Explanation:</strong> ${item.explanation}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function checkAnswer(qIdx, oIdx) {
+    const q = quizData[qIdx];
+    const card = document.getElementById(`q${qIdx}`);
+    const options = card.querySelectorAll('.option');
+    const exp = document.getElementById(`exp${qIdx}`);
+
+    options.forEach(btn => btn.disabled = true);
+
+    if (oIdx === q.correct) {
+        options[oIdx].classList.add('correct');
+        exp.style.background = "rgba(35, 134, 54, 0.12)";
+    } else {
+        options[oIdx].classList.add('wrong');
+        options[q.correct].classList.add('correct');
+        exp.style.background = "rgba(218, 54, 51, 0.12)";
+    }
+
+    exp.style.display = "block";
+}
+
+renderVocab();
+renderQuiz();
+</script>
+
+</body>
+</html>
